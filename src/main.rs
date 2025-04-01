@@ -3,10 +3,7 @@
 
 use core::panic::PanicInfo;
 
-mod memory;
-mod process;
 mod uart;
-mod fs;
 
 // 부트 시퀀스를 위한 기본 진입점
 #[no_mangle]
@@ -24,18 +21,9 @@ pub extern "C" fn rust_main() -> ! {
     
     println!("Rust OS in 1,000 Lines 부팅 중...");
     
-    // 메모리 관리자 초기화
-    memory::init_memory(0x8020_0000, 4 * 1024 * 1024); // 4MB 힙 크기
-    
-    // 프로세스 테이블 초기화
-    process::init_process_table();
-    
-    // 파일 시스템 초기화
-    fs::init_filesystem();
-    
     println!("OS 초기화 완료!");
     
-    // 셸 실행 (TODO)
+    // 셸 실행
     shell_loop();
     
     // 여기에 도달하지 않음

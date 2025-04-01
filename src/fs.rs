@@ -17,6 +17,7 @@ pub enum FileType {
 
 // inode 구조체 (파일 메타데이터)
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub struct Inode {
     pub file_type: FileType,
     pub size: usize,
@@ -37,6 +38,7 @@ impl Inode {
 
 // 디렉토리 엔트리 구조체
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub struct DirEntry {
     pub inode_number: u32,
     pub name: [u8; MAX_FILE_NAME],
@@ -63,6 +65,7 @@ impl DirEntry {
 }
 
 // 열린 파일 구조체
+#[derive(Clone, Copy)]
 pub struct File {
     pub inode_number: u32,
     pub offset: usize,
@@ -79,20 +82,45 @@ impl File {
     }
 }
 
+// 파일 엔트리 번들
+#[derive(Clone, Copy)]
+pub struct FileEntry {
+    pub file: File,
+    pub active: bool,
+}
+
+// 아이노드 엔트리 번들
+#[derive(Clone, Copy)]
+pub struct InodeEntry {
+    pub inode: Inode,
+    pub active: bool,
+}
+
 // 간단한 파일 시스템 구현
 pub struct FileSystem {
     // 파일 시스템 메타데이터
     initialized: bool,
-    inodes: [Option<Inode>; MAX_FILES],
-    open_files: [Option<File>; MAX_FILES],
+    inodes: [InodeEntry; MAX_FILES],
+    open_files: [FileEntry; MAX_FILES],
 }
 
 impl FileSystem {
     pub fn new() -> Self {
+        // 빈 초기화를 위한 더미 값들
+        let empty_inode_entry = InodeEntry {
+            inode: Inode::new(),
+            active: false,
+        };
+        
+        let empty_file_entry = FileEntry {
+            file: File::new(0, 0),
+            active: false,
+        };
+        
         FileSystem {
             initialized: false,
-            inodes: [None; MAX_FILES],
-            open_files: [None; MAX_FILES],
+            inodes: [empty_inode_entry; MAX_FILES],
+            open_files: [empty_file_entry; MAX_FILES],
         }
     }
     

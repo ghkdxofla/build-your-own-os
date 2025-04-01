@@ -1,4 +1,5 @@
 use core::sync::atomic::{AtomicUsize, Ordering};
+use core::ptr::NonNull;
 
 // 프로세스 ID 카운터
 static NEXT_PID: AtomicUsize = AtomicUsize::new(1);
@@ -14,6 +15,7 @@ pub enum ProcessState {
 
 // 프로세스 컨텍스트 구조체
 #[repr(C)]
+#[derive(Clone, Copy)]
 pub struct Context {
     // RISC-V 레지스터 상태
     pub ra: usize,   // 반환 주소
@@ -62,12 +64,20 @@ impl Context {
     }
 }
 
+// 간단한 프로세스 번들
+#[derive(Clone, Copy)]
+pub struct ProcessBundle {
+    pub process: Process,
+    pub active: bool,
+}
+
 // 프로세스 구조체
+#[derive(Clone, Copy)]
 pub struct Process {
     pub pid: usize,
     pub state: ProcessState,
     pub context: Context,
-    pub stack: *mut u8,
+    pub stack_ptr: usize,  // raw pointer 대신 usize 사용
     pub stack_size: usize,
     pub page_table: usize, // 페이지 테이블 주소 (나중에 개선)
 }
@@ -79,7 +89,7 @@ impl Process {
             pid,
             state: ProcessState::Ready,
             context: Context::new(),
-            stack: core::ptr::null_mut(),
+            stack_ptr: 0,
             stack_size: 0,
             page_table: 0,
         }
@@ -88,7 +98,26 @@ impl Process {
 
 // 간단한 프로세스 테이블 (나중에 개선)
 pub const MAX_PROCESSES: usize = 64;
-static mut PROCESSES: [Option<Process>; MAX_PROCESSES] = [None; MAX_PROCESSES];
+
+// 고정 크기 배열 사용
+static mut PROCESSES: [ProcessBundle; MAX_PROCESSES] = [ProcessBundle {
+    process: Process {
+        pid: 0,
+        state: ProcessState::Ready,
+        context: Context {
+            ra: 0, sp: 0, gp: 0, tp: 0,
+            t0: 0, t1: 0, t2: 0,
+            s0: 0, s1: 0,
+            a0: 0, a1: 0, a2: 0, a3: 0, a4: 0, a5: 0, a6: 0, a7: 0,
+            s2: 0, s3: 0, s4: 0, s5: 0, s6: 0, s7: 0, s8: 0, s9: 0, s10: 0, s11: 0,
+            t3: 0, t4: 0, t5: 0, t6: 0,
+        },
+        stack_ptr: 0,
+        stack_size: 0,
+        page_table: 0,
+    },
+    active: false,
+}; MAX_PROCESSES];
 
 // 현재 실행 중인 프로세스의 인덱스
 static mut CURRENT_PROCESS: usize = 0;
@@ -97,7 +126,8 @@ static mut CURRENT_PROCESS: usize = 0;
 pub fn init_process_table() {
     unsafe {
         // 커널 프로세스 (PID 0) 생성
-        PROCESSES[0] = Some(Process::new());
+        PROCESSES[0].process = Process::new();
+        PROCESSES[0].active = true;
         CURRENT_PROCESS = 0;
     }
 }
@@ -111,30 +141,28 @@ pub fn schedule() -> *mut Context {
         
         // 다음 Ready 상태의 프로세스 찾기
         while next != current {
-            if let Some(process) = &PROCESSES[next] {
-                if process.state == ProcessState::Ready {
-                    break;
-                }
+            if PROCESSES[next].active && PROCESSES[next].process.state == ProcessState::Ready {
+                break;
             }
             next = (next + 1) % MAX_PROCESSES;
         }
         
-        if next != current && PROCESSES[next].is_some() {
+        if next != current && PROCESSES[next].active {
             CURRENT_PROCESS = next;
         }
         
         // 현재 프로세스의 컨텍스트 반환
-        if let Some(process) = PROCESSES[CURRENT_PROCESS].as_mut() {
-            process.state = ProcessState::Running;
-            &mut process.context as *mut Context
+        if PROCESSES[CURRENT_PROCESS].active {
+            PROCESSES[CURRENT_PROCESS].process.state = ProcessState::Running;
+            &mut PROCESSES[CURRENT_PROCESS].process.context as *mut Context
         } else {
             // 실행 가능한 프로세스가 없을 경우
             // 첫 번째 프로세스를 생성하고 반환
-            PROCESSES[0] = Some(Process::new());
+            PROCESSES[0].process = Process::new();
+            PROCESSES[0].active = true;
             CURRENT_PROCESS = 0;
-            let process = PROCESSES[0].as_mut().unwrap();
-            process.state = ProcessState::Running;
-            &mut process.context as *mut Context
+            PROCESSES[0].process.state = ProcessState::Running;
+            &mut PROCESSES[0].process.context as *mut Context
         }
     }
 } 
