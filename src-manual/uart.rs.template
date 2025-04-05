@@ -1,0 +1,49 @@
+//! uart.rs
+//! UART 통신 모듈 템플릿
+//! 이 템플릿을 참고하여 uart.rs 파일을 작성하세요.
+
+use core::fmt;
+
+// TODO: UART 레지스터 주소 상수 정의
+
+// TODO: LSR 비트 상수 정의
+
+// UART 초기화
+pub fn init() {
+    // TODO: UART 초기화 구현
+}
+
+// UART 레지스터에서 바이트 읽기
+fn read_reg(reg: usize) -> u8 {
+    // TODO: 레지스터 읽기 구현
+    0
+}
+
+// UART 레지스터에 바이트 쓰기
+fn write_reg(reg: usize, val: u8) {
+    // TODO: 레지스터 쓰기 구현
+}
+
+// 단일 문자 전송
+pub fn putchar(c: u8) {
+    // TODO: 문자 전송 구현
+}
+
+// 단일 문자 수신
+pub fn getchar() -> Option<u8> {
+    // TODO: 문자 수신 구현
+    None
+}
+
+// 문자열 출력
+pub fn puts(s: &str) {
+    // TODO: 문자열 출력 구현
+}
+
+// TODO: fmt::Write 트레이트 구현
+
+// println! 매크로가 사용하는 함수
+#[doc(hidden)]
+pub fn _print(args: fmt::Arguments) {
+    // TODO: 포맷된 문자열 출력 구현
+} 

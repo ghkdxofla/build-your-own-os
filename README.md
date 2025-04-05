@@ -24,10 +24,11 @@
    - `src` 폴더에 구현되어 있습니다.
 
 2. **수동 구현 버전(src-manual)**:
-   - 사람이 직접 Rust 코드를 작성한 버전입니다.
-   - `src-manual` 폴더에 구현되어 있습니다.
+   - 사람이 직접 Rust 코드를 작성해야 하는 버전입니다.
+   - `src-manual` 폴더에 템플릿이 준비되어 있으며, 직접 구현해야 합니다.
+   - 각 모듈에 대한 템플릿 파일(.template 확장자)을 참고하여 구현하세요.
 
-두 버전 모두 동일한 기능을 구현하지만, 코드 스타일과 일부 구현 방식에 차이가 있을 수 있습니다.
+두 버전 모두 동일한 기능을 구현해야 하며, 테스트를 통해 결과를 비교할 수 있습니다.
 
 ## 시작하기
 
@@ -50,6 +51,18 @@ rustup target add riscv64gc-unknown-none-elf
 rustup component add rust-src
 ```
 
+### src-manual 구현 방법
+
+1. src-manual 폴더의 각 .template 파일을 참고하여 해당 모듈을 구현하세요.
+2. 다음 파일들을 작성해야 합니다:
+   - `boot.S` - 부팅 코드
+   - `main.rs` - 메인 커널 코드
+   - `uart.rs` - UART 통신 모듈
+   - `memory.rs` - 메모리 관리 모듈
+   - `process.rs` - 프로세스 관리 모듈
+   - `fs.rs` - 파일 시스템 모듈
+3. 구현이 완료되면 아래의 빌드 및 테스트 명령을 실행하세요.
+
 ### 빌드 및 실행
 
 #### 자동 생성 버전 (src)
@@ -70,6 +83,18 @@ cargo build --release --features=manual
 
 # QEMU에서 실행
 qemu-system-riscv64 -machine virt -bios none -kernel target/riscv64gc-unknown-none-elf/release/rust-os-1000-lines -nographic
+```
+
+### 테스트 방법
+
+두 구현이 동일한 결과를 내는지 테스트할 수 있습니다:
+
+```bash
+# 빌드 도우미 실행
+cargo test --test helper_script -- --nocapture
+
+# 구현 비교 테스트 실행 (src-manual 구현이 완료된 후)
+cargo test --test implementation_comparison
 ```
 
 ### 버전 비교

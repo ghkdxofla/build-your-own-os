@@ -1,0 +1,58 @@
+//! memory.rs
+//! 메모리 관리 모듈 템플릿
+//! 이 템플릿을 참고하여 memory.rs 파일을 작성하세요.
+
+// TODO: 메모리 관련 상수 정의
+
+// 물리적 메모리 관리를 위한 구조체
+pub struct MemoryManager {
+    // TODO: 필요한 필드 정의
+}
+
+impl MemoryManager {
+    pub fn new() -> Self {
+        // TODO: 메모리 관리자 초기화 구현
+        MemoryManager {
+            // TODO: 필드 초기화
+        }
+    }
+
+    pub fn init(&mut self, start: usize, size: usize) {
+        // TODO: 메모리 관리자 초기화 구현
+    }
+
+    // 메모리 할당
+    pub fn alloc(&mut self, size: usize) -> Option<usize> {
+        // TODO: 메모리 할당 구현
+        None
+    }
+
+    // 메모리 해제
+    pub fn free(&mut self, addr: usize) {
+        // TODO: 메모리 해제 구현
+    }
+}
+
+// 메모리 정렬 함수
+pub fn align_up(addr: usize, align: usize) -> usize {
+    // TODO: 주소 정렬 구현
+    addr
+}
+
+// TODO: 전역 메모리 관리자 인스턴스 정의
+
+// 전역 메모리 관리자 초기화
+pub fn init_memory(heap_start: usize, heap_size: usize) {
+    // TODO: 전역 메모리 관리자 초기화 구현
+}
+
+// kmalloc 함수
+pub fn kmalloc(size: usize) -> Option<*mut u8> {
+    // TODO: 메모리 할당 함수 구현
+    None
+}
+
+// kfree 함수
+pub fn kfree(ptr: *mut u8) {
+    // TODO: 메모리 해제 함수 구현
+} 

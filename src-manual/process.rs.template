@@ -1,0 +1,70 @@
+//! process.rs
+//! 프로세스 관리 모듈 템플릿
+//! 이 템플릿을 참고하여 process.rs 파일을 작성하세요.
+
+use core::sync::atomic::{AtomicUsize, Ordering};
+
+// TODO: 프로세스 ID 카운터 정의
+
+// 프로세스 상태 열거형
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ProcessState {
+    // TODO: 프로세스 상태 정의
+}
+
+// 프로세스 컨텍스트 구조체
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct Context {
+    // TODO: RISC-V 레지스터 상태 정의
+}
+
+impl Context {
+    pub fn new() -> Self {
+        // TODO: 컨텍스트 초기화 구현
+        Context {
+            // TODO: 필드 초기화
+        }
+    }
+}
+
+// 프로세스 번들 구조체
+#[derive(Clone, Copy)]
+pub struct ProcessBundle {
+    // TODO: 프로세스 번들 필드 정의
+}
+
+// 프로세스 구조체
+#[derive(Clone, Copy)]
+pub struct Process {
+    // TODO: 프로세스 필드 정의
+}
+
+impl Process {
+    pub fn new() -> Self {
+        // TODO: 프로세스 초기화 구현
+        Process {
+            // TODO: 필드 초기화
+        }
+    }
+}
+
+// 프로세스 테이블 관련 상수
+pub const MAX_PROCESSES: usize = 64;
+
+// TODO: 프로세스 테이블 초기값 생성을 위한 매크로 정의
+
+// TODO: 전역 프로세스 테이블 정의
+
+// TODO: 현재 실행 중인 프로세스의 인덱스 정의
+
+// 프로세스 테이블 초기화
+pub fn init_process_table() {
+    // TODO: 프로세스 테이블 초기화 구현
+}
+
+// 컨텍스트 스위칭 함수
+pub fn schedule() -> *mut Context {
+    // TODO: 컨텍스트 스위칭 구현
+    core::ptr::null_mut()
+} 

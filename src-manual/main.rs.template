@@ -1,0 +1,67 @@
+//! main.rs
+//! 커널 메인 코드 템플릿
+//! 이 템플릿을 참고하여 main.rs 파일을 작성하세요.
+
+#![no_std] // 표준 라이브러리를 사용하지 않음
+#![no_main] // 표준 main 함수를 사용하지 않음
+
+use core::panic::PanicInfo;
+
+// TODO: 필요한 모듈 선언
+// mod uart;
+// mod memory;
+// mod process;
+// mod fs;
+
+// 부트 시퀀스를 위한 기본 진입점
+#[no_mangle]
+pub extern "C" fn _start() -> ! {
+    // TODO: 부팅 코드 구현
+    loop {}
+}
+
+// 실제 Rust 코드의 진입점 (어셈블리에서 호출됨)
+#[no_mangle]
+pub extern "C" fn rust_main() -> ! {
+    // TODO: 커널 초기화 코드 구현
+    
+    // TODO: UART 초기화
+    
+    // TODO: 메모리 초기화
+    
+    // TODO: 프로세스 관리 초기화
+    
+    // TODO: 파일 시스템 초기화
+    
+    // TODO: 셸 루프 호출
+    
+    // 여기에 도달하지 않음
+    loop {}
+}
+
+// 셸 루프 구현
+fn shell_loop() -> ! {
+    // TODO: 셸 루프 구현
+    loop {}
+}
+
+// 프롬프트 출력
+fn print_prompt() {
+    // TODO: 프롬프트 출력 구현
+}
+
+// 명령어 실행
+fn execute_command(cmd: &[u8]) {
+    // TODO: 명령어 실행 구현
+}
+
+// 패닉 핸들러
+#[panic_handler]
+fn panic(info: &PanicInfo) -> ! {
+    // TODO: 패닉 핸들러 구현
+    loop {}
+}
+
+// TODO: println! 매크로 구현
+
+// TODO: print! 매크로 구현 

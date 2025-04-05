@@ -1,0 +1,155 @@
+//! fs.rs
+//! 파일 시스템 모듈 템플릿
+//! 이 템플릿을 참고하여 fs.rs 파일을 작성하세요.
+
+use crate::println;
+
+// TODO: 디스크 I/O 관련 상수 정의
+
+// TODO: 파일 시스템 관련 상수 정의
+
+// 파일 타입 열거형
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum FileType {
+    // TODO: 파일 타입 정의
+}
+
+// inode 구조체 (파일 메타데이터)
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct Inode {
+    // TODO: inode 필드 정의
+}
+
+impl Inode {
+    pub fn new() -> Self {
+        // TODO: inode 초기화 구현
+        Inode {
+            // TODO: 필드 초기화
+        }
+    }
+}
+
+// 디렉토리 엔트리 구조체
+#[repr(C)]
+#[derive(Clone, Copy)]
+pub struct DirEntry {
+    // TODO: 디렉토리 엔트리 필드 정의
+}
+
+impl DirEntry {
+    pub fn new() -> Self {
+        // TODO: 디렉토리 엔트리 초기화 구현
+        DirEntry {
+            // TODO: 필드 초기화
+        }
+    }
+    
+    pub fn set_name(&mut self, name: &str) {
+        // TODO: 이름 설정 구현
+    }
+    
+    pub fn get_name(&self) -> &str {
+        // TODO: 이름 가져오기 구현
+        ""
+    }
+}
+
+// 파일 구조체
+#[derive(Clone, Copy)]
+pub struct File {
+    // TODO: 파일 필드 정의
+}
+
+impl File {
+    pub fn new(inode_number: u32, mode: u32) -> Self {
+        // TODO: 파일 초기화 구현
+        File {
+            // TODO: 필드 초기화
+        }
+    }
+}
+
+// 파일 엔트리 번들
+#[derive(Clone, Copy)]
+pub struct FileEntry {
+    // TODO: 파일 엔트리 필드 정의
+}
+
+// 아이노드 엔트리 번들
+#[derive(Clone, Copy)]
+pub struct InodeEntry {
+    // TODO: 아이노드 엔트리 필드 정의
+}
+
+// 파일 시스템 구현
+pub struct FileSystem {
+    // TODO: 파일 시스템 필드 정의
+}
+
+// TODO: 파일 시스템 매크로 정의
+
+impl FileSystem {
+    pub fn new() -> Self {
+        // TODO: 파일 시스템 초기화 구현
+        FileSystem {
+            // TODO: 필드 초기화
+        }
+    }
+    
+    pub fn init(&mut self) {
+        // TODO: 파일 시스템 초기화 구현
+    }
+    
+    // 파일 열기
+    pub fn open(&mut self, path: &str, mode: u32) -> Option<usize> {
+        // TODO: 파일 열기 구현
+        None
+    }
+    
+    // 파일 읽기
+    pub fn read(&mut self, fd: usize, buf: &mut [u8]) -> Option<usize> {
+        // TODO: 파일 읽기 구현
+        None
+    }
+    
+    // 파일 쓰기
+    pub fn write(&mut self, fd: usize, buf: &[u8]) -> Option<usize> {
+        // TODO: 파일 쓰기 구현
+        None
+    }
+    
+    // 파일 닫기
+    pub fn close(&mut self, fd: usize) -> bool {
+        // TODO: 파일 닫기 구현
+        false
+    }
+}
+
+// TODO: 전역 파일 시스템 인스턴스 정의
+
+// 파일 시스템 초기화
+pub fn init_filesystem() {
+    // TODO: 파일 시스템 초기화 구현
+}
+
+// 파일 시스템 API 함수
+pub fn open(path: &str, mode: u32) -> Option<usize> {
+    // TODO: 파일 열기 API 구현
+    None
+}
+
+pub fn read(fd: usize, buf: &mut [u8]) -> Option<usize> {
+    // TODO: 파일 읽기 API 구현
+    None
+}
+
+pub fn write(fd: usize, buf: &[u8]) -> Option<usize> {
+    // TODO: 파일 쓰기 API 구현
+    None
+}
+
+pub fn close(fd: usize) -> bool {
+    // TODO: 파일 닫기 API 구현
+    false
+} 
