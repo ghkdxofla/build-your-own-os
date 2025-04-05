@@ -17,4 +17,6 @@ panic = "abort"
 panic = "abort"
 
 [features]
-default = [] 
+default = ["auto"] 
+auto = []      # src 폴더 사용 (자동 생성된 코드)
+manual = []    # src-manual 폴더 사용 (수동으로 작성된 코드) 

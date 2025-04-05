@@ -15,6 +15,20 @@
 - 사용자 모드 및 커널 모드 전환
 - 시스템 콜 구현
 
+## 구현 버전
+
+이 프로젝트는 두 가지 구현 버전을 포함하고 있습니다:
+
+1. **자동 생성 버전(src)**: 
+   - AI 도구를 사용하여 자동으로 생성된 버전입니다.
+   - `src` 폴더에 구현되어 있습니다.
+
+2. **수동 구현 버전(src-manual)**:
+   - 사람이 직접 Rust 코드를 작성한 버전입니다.
+   - `src-manual` 폴더에 구현되어 있습니다.
+
+두 버전 모두 동일한 기능을 구현하지만, 코드 스타일과 일부 구현 방식에 차이가 있을 수 있습니다.
+
 ## 시작하기
 
 ### 필요 조건
@@ -38,13 +52,31 @@ rustup component add rust-src
 
 ### 빌드 및 실행
 
+#### 자동 생성 버전 (src)
+
 ```bash
-# 빌드
-cargo build --release
+# 자동 생성 버전 빌드
+cargo build --release --features=auto
 
 # QEMU에서 실행
 qemu-system-riscv64 -machine virt -bios none -kernel target/riscv64gc-unknown-none-elf/release/rust-os-1000-lines -nographic
 ```
+
+#### 수동 구현 버전 (src-manual)
+
+```bash
+# 수동 구현 버전 빌드
+cargo build --release --features=manual
+
+# QEMU에서 실행
+qemu-system-riscv64 -machine virt -bios none -kernel target/riscv64gc-unknown-none-elf/release/rust-os-1000-lines -nographic
+```
+
+### 버전 비교
+
+두 버전은 각각 다른 프롬프트를 출력합니다:
+- 자동 생성 버전: `rust-os>`
+- 수동 구현 버전: `rust-os-manual>`
 
 ## 라이센스
 
