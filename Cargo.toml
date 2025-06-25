@@ -7,8 +7,6 @@ authors = ["Your Name"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-# RISC-V 관련 라이브러리
-riscv = "0.10.1"
 
 [profile.dev]
 panic = "abort"
@@ -19,4 +17,4 @@ panic = "abort"
 [features]
 default = ["auto"] 
 auto = []      # src 폴더 사용 (자동 생성된 코드)
-manual = []    # src-manual 폴더 사용 (수동으로 작성된 코드) 
+manual = []    # src 폴더 사용 (수동으로 작성된 코드)

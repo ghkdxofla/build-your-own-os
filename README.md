@@ -93,7 +93,7 @@ qemu-system-riscv64 -machine virt -bios none -kernel target/riscv64gc-unknown-no
 # 빌드 도우미 실행
 cargo test --test helper_script -- --nocapture
 
-# 구현 비교 테스트 실행 (src-manual 구현이 완료된 후)
+# 구현 비교 테스트 실행 (src 구현이 완료된 후)
 cargo test --test implementation_comparison
 ```
 
