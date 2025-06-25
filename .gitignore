@@ -5,7 +5,7 @@
 **/*.rs.bk
 
 # Cargo lock file
-# Cargo.lock
+Cargo.lock
 
 # IDE files
 .idea/
