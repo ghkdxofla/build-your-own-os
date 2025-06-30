@@ -24,7 +24,7 @@ fn panic(_info: &PanicInfo) -> ! {
 }
 
 #[no_mangle]
-extern "C" fn kernel_main() {
+fn kernel_main() {
     // C 코드의 memset(__bss, 0, (size_t) __bss_end - (size_t) __bss); 구현
     unsafe {
         // &__bss as *const u8 as *mut u8: BSS 시작 주소를 가변 포인터로 변환
