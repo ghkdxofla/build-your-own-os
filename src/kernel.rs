@@ -1,5 +1,5 @@
-use core::ptr;
 use core::panic::PanicInfo;
+use core::ptr;
 
 // C의 extern char __bss[], __bss_end[], __stack_top[]를 대체
 // Rust에서는 extern "C" 블록으로 링커 심볼을 선언
@@ -18,7 +18,13 @@ fn memset(buf: *mut u8, c: u8, n: usize) {
     }
 }
 
-fn kernel_main() {
+#[panic_handler]
+fn panic(_info: &PanicInfo) -> ! {
+    loop {}
+}
+
+#[no_mangle]
+extern "C" fn kernel_main() {
     // C 코드의 memset(__bss, 0, (size_t) __bss_end - (size_t) __bss); 구현
     unsafe {
         // &__bss as *const u8 as *mut u8: BSS 시작 주소를 가변 포인터로 변환
@@ -36,22 +42,17 @@ fn kernel_main() {
     loop {}
 }
 
-#[panic_handler]
-fn panic(_info: &PanicInfo) -> ! {
-    loop {}
-}
-
 // C의 __attribute__들을 Rust 속성으로 대체
-#[link_section = ".text.boot"]  // C의 __attribute__((section(".text.boot"))) 대체
-#[no_mangle]                    // 함수 이름 맹글링 방지 (링커에서 찾을 수 있도록)
+#[link_section = ".text.boot"]
+#[no_mangle]
 pub unsafe extern "C" fn boot() -> ! {
     // C의 __asm__ __volatile__ 대체: core::arch::asm! 매크로 사용
     core::arch::asm!(
-        "mv sp, {stack_top}",   // 스택 포인터 설정
-        "j {kernel_main}",      // kernel_main으로 점프
-        stack_top = in(reg) &__stack_top,  // 입력: 스택 탑 주소를 레지스터에
-        kernel_main = sym kernel_main,     // 심볼: kernel_main 함수 주소
-        options(noreturn)       // 이 함수는 리턴하지 않음을 명시
+    "mv sp, {stack_top}",   // 스택 포인터 설정
+    "j {kernel_main}",      // kernel_main으로 점프
+    stack_top = in(reg) &__stack_top,  // 입력: 스택 탑 주소를 레지스터에
+    kernel_main = sym kernel_main,     // 심볼: kernel_main 함수 주소
+    options(noreturn)       // 이 함수는 리턴하지 않음을 명시
     )
 }
 
